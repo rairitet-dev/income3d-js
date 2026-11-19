@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Income3D demo</title>
+<style>
+  body{margin:0;padding:12px;background:#0a1330;color:#e9eefc;font:14px system-ui,sans-serif}
+  #chart{height:60vh;min-height:300px;border-radius:20px}
+  .bar{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+  select,button{padding:9px 12px;border-radius:10px;border:1px solid #22346b;background:#16264f;color:inherit;font:inherit}
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<div class="bar">
+  <select id="theme"><option>navy</option><option>dark</option><option>light</option></select>
+  <select id="palette"><option>amethyst</option><option>coral</option><option>emerald</option><option>classic</option></select>
+  <select id="cur"><option>USD</option><option>EUR</option><option>RUB</option><option>TMT</option></select>
+  <button id="play">Presentation</button><button id="top">Top view</button><button id="reset">Reset</button><button id="png">PNG</button>
+</div>
+<script src="income3d.js"></script>
+<script>
+  const chart = new Income3D('#chart', {            // values are in thousands of `currency`
+    data: [
+      { period: 'Q1 2026', fact: 80,  forecast: 95 },
+      { period: 'Q2 2026', fact: 110, forecast: 120 },
+      { period: 'Q3 2026', fact: 150, forecast: 140 },
+      { period: 'Q4 2026', fact: 185, forecast: 200 }
+    ],
+    theme: 'navy', palette: 'amethyst', currency: 'USD', locale: 'en'
+  });
+  const $ = id => document.getElementById(id);
+  $('theme').onchange   = e => chart.setTheme(e.target.value);
+  $('palette').onchange = e => chart.setPalette(e.target.value);
+  $('cur').onchange     = e => chart.setCurrency(e.target.value);
+  $('play').onclick  = () => chart.playPresentation();
+  $('top').onclick   = () => chart.setCameraView('top');
+  $('reset').onclick = () => chart.setCameraView('reset');
+  $('png').onclick   = () => chart.exportPNG({ download: true, filename: 'income.png' });
+</script>
+</body>
+</html>
